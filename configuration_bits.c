@@ -45,11 +45,22 @@
 /******************************************************************************/
 
 // Configuración sin protección de código, oscilador RC
-
-#pragma config BOREN=ON, CPD=OFF, DEBUG=ON, WRT=OFF, FOSC=EXTRC, WDTE=ON
-#pragma config CP=OFF, LVP=OFF, PWRTE=ON
+#pragma config OSCS=OFF, OSC=RCIO
+#pragma config BOR=ON, BORV=27, PWRT=ON
+#pragma config WDTPS=8, WDT=ON
+#pragma config CCP2MUX=ON
+#pragma config DEBUG=ON, LVP=OFF, STVR=ON
+#pragma config CP0=OFF, CP1=OFF, CP2=OFF, CP3=OFF
+#pragma config CPD=OFF, CPB=OFF
+#pragma config WRT0=OFF, WRT1=OFF, WRT2=OFF, WRT3=OFF
+#pragma config WRTB=OFF, WRTC=OFF, WRTD=OFF
+#pragma config EBTR0=OFF, EBTR1=OFF, EBTR2=OFF, EBTR3=OFF
+#pragma config EBTRB=OFF
 #pragma config IDLOC0=0x0001
 #pragma config IDLOC1=0x0000
 #pragma config IDLOC2=0x0000
-
-/* TODO Fill in your configuration bits here using the config generator.      */
+#pragma config IDLOC3=0x0000
+#pragma config IDLOC4=0x0000
+#pragma config IDLOC5=0x0000
+#pragma config IDLOC6=0x0000
+#pragma config IDLOC7=0x0000
