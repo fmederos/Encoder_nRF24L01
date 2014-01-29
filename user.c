@@ -58,18 +58,27 @@ void InitApp(void)
 
     // Configuración de interrupciones
     // -------------------------------
-    
-    INTCON2bits.INTEDG2=0;  // interrupcion INT2 flanco desc. (IRQ desde nRF)
+    // Para comunicación eficiente con el nRF se pude utilizar su línea de interrupción
+    // IRQ en línea INT2 del uC
+    // Para lectura de encoder se utiliza interrupción por cambio en pines de PortB
+    // esto tiene la desventaja de ocasionar interrupciones también con las transiciones
+    // en la linea IRQ del nRF24. Aunque esto no ocasiona problemas directamente
+    // sí será un consumo innecesario de tiempo de procesador, habrá que ver cuanto es.
 
     RCONbits.IPEN=1;        // habilitamos interrupciones priorizadas
+
     INTCON2bits.RBIP=1;     // interrupción por cambio en PortB alta prio
+    INTCONbits.RBIE=1;      // habilitamos interrupciones por cambio en PortB
     INTCON3bits.INT2IP=0;   // interrupción INT2 baja prio
+    INTCON2bits.INTEDG2=0;  // interrupcion INT2 flanco desc. (IRQ desde nRF)
+    INTCON3bits.INT2IE=1;   // interrupción IRQ del módulo wireless
     
+    INTCONbits.RBIF=0;      // restablecemos flag cambio en PortB
+    INTCON3bits.INT2IF=0;
+
     // Arranque de interrupciones
-    INTCONbits.RBIF=0;  // restablecemos flag cambio en PortB
     INTCONbits.GIE=1;   // arrancamos interrupciones altas
     //INTCONbits.PEIE=1;  // arrancamos interrupciones bajas
-    INTCONbits.RBIE=1;  // arrancamos interrupciones por cambio en PortB
 
 }
 

@@ -13,3 +13,5 @@ BYTE RXChar();
 void TXChar(BYTE ch);
 BOOL ReadDataAvailable();
 void FlushTXRX();
+void WritePayload(BYTE num, BYTE* data);
+

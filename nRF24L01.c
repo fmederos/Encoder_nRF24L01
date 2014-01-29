@@ -3,6 +3,8 @@
 
  created 14 November 2013
  by Jon Nethercott
+ *
+ * Modded for 18F252
  */
 
 #include <xc.h>
@@ -12,10 +14,10 @@
 #include "nRF24L01.h"
 
 //Pins
-#define triscsn TRISA5
-#define trisce TRISA4
-#define csnPin RA5
-#define cePin RA4
+#define triscsn TRISC2
+#define trisce TRISC1
+#define csnPin RC2
+#define cePin RC1
 //#define irqPin
 
 //Commands
@@ -57,7 +59,7 @@ const BYTE DYNPD = 0x1C;
 const BYTE FEATURE = 0x1D;
 
 //Data
-BYTE RXTX_ADDR[3] = { 0xB5, 0x23, 0xA5 };  //Randomly chosen address
+BYTE RXTX_ADDR[3] = { 0xB6, 0x24, 0xA6 };  //Randomly chosen address
 BOOL rfCardPresent = FALSE;
 
 //Local Helper Function Prototypes
@@ -88,7 +90,7 @@ void nRF_Setup()
   WriteRegister(EN_RXADDR, 0x01);      //Enable data pipe 0
   WriteRegister(SETUP_AW, 0x01);       //3 BYTE address
   WriteRegister(SETUP_RETR, 0x00);     //Retransmit disabled
-  WriteRegister(RF_CH, 0x01);          //Randomly chosen RF channel
+  WriteRegister(RF_CH, 0x05);          //Randomly chosen RF channel
   WriteRegister(RF_SETUP, 0x26);       //250kbps, 0dBm
   WriteRegister(RX_PW_P0, 0x01);       //RX payload = 1 BYTE
 

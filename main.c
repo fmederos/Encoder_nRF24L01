@@ -19,12 +19,14 @@
 
 #include "system.h"        /* System funct/params, like osc/peripheral config */
 #include "user.h"          /* User funct/params, such as InitApp */
+#include "nRF24L01.h"
 
 /******************************************************************************/
 /* User Global Variable Declaration                                           */
 /******************************************************************************/
 
-/* i.e. uint8_t <variable_name>; */
+// Contador de pulsos
+unsigned long contador=0;
 
 /******************************************************************************/
 /* Main Program                                                               */
@@ -32,18 +34,34 @@
 
 void main(void)
 {
-    /* Configure the oscillator for the device */
-    ConfigureOscillator();
+    unsigned long contador_ant;
 
     /* Initialize I/O and Peripherals for application */
     InitApp();
 
-    /* TODO <INSERT USER APPLICATION CODE HERE> */
+    // TODO terminar de revisar nRF setup
+    nRF_Setup();
 
+    // TODO: hacemos un flush del buffer TX
     while(1)
     {
+        // La cuenta de contador es incrementada/decrementada por la rutina
+        // de atención de interrupción por cambio de pines RB0/1
 
+        // TODO: esperamos que buffer TX quede vacío
+        
+        // Verificamos si la cuenta se ha modificado
+        if(contador != contador_ant){
+            // hubo movimiento del encoder
+            // tenemos que trasmitir el valor de la cuenta
+            // tomamos referencia del valor actual de la cuenta
+            GIEH=0;     // desactivamos interrupciones de cuenta encoder para
+                        // tener acceso seguro a contador
+            contador_ant = contador;
+            GIEH=1;
+            // pasamos los 4 bytes al módulo wireless
+            WritePayload(4,(char*)&contador_ant);
+        }
     }
-
 }
 

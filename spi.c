@@ -13,10 +13,11 @@
 
 void SPI_init()
 {
+    // Configuración de pines y módulo SSP para 18f252
     SSPEN = 0;
-    TRISC0 = 0;     //SCK
-    ANSC1 = 0;      //SDI
-    TRISC2 = 0;     //SDO
+    TRISC3 = 0;     //SCK
+    //ANSC1 = 0;      //SDI
+    TRISC5 = 0;     //SDO
     CKE = 1;
     SSPCON1 = 0x01;
     SMP = 1;

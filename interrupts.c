@@ -72,6 +72,11 @@ void low_isr(void)
 #error "Invalid compiler selection for implemented ISR routines"
 #endif
 {
+    // la única fuente de interrupción de baja prioridad debería ser la IRQ del
+    // módulo wireless
+
+    // restablecemos su flag
+    INTCON3bits.INT2IF=0;
 
       /* This code stub shows general interrupt handling.  Note that these
       conditional statements are not handled within 3 seperate if blocks.
