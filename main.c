@@ -36,31 +36,29 @@ void main(void)
 {
     unsigned long contador_ant;
 
-    /* Initialize I/O and Peripherals for application */
+    // InitApp inicializa E/S del uC, periféricos internos y externos (módulo wireless)
     InitApp();
 
-    // TODO terminar de revisar nRF setup
-    nRF_Setup();
-
-    // TODO: hacemos un flush del buffer TX
     while(1)
     {
         // La cuenta de contador es incrementada/decrementada por la rutina
         // de atención de interrupción por cambio de pines RB0/1
 
-        // TODO: esperamos que buffer TX quede vacío
-        
         // Verificamos si la cuenta se ha modificado
         if(contador != contador_ant){
             // hubo movimiento del encoder
-            // tenemos que trasmitir el valor de la cuenta
-            // tomamos referencia del valor actual de la cuenta
-            GIEH=0;     // desactivamos interrupciones de cuenta encoder para
-                        // tener acceso seguro a contador
-            contador_ant = contador;
-            GIEH=1;
-            // pasamos los 4 bytes al módulo wireless
-            WritePayload(4,(char*)&contador_ant);
+            // confirmamos que buffer TX quede vacío
+            // chequeamos flag TX_EMPTY (bit 4)
+            if ((ReadRegister(FIFO_STATUS) & 0x10) != 0){
+                // tenemos que trasmitir el valor de la cuenta
+                // tomamos referencia del valor actual de la cuenta
+                GIEH=0;     // desactivamos interrupciones de cuenta encoder para
+                            // tener acceso seguro a contador
+                contador_ant = contador;
+                GIEH=1;
+                // pasamos los 4 bytes al módulo wireless y los trasmitimos
+                WritePayload(4,(char*)&contador_ant);
+            }
         }
     }
 }

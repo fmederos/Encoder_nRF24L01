@@ -18,6 +18,7 @@
 #endif
 
 #include "user.h"
+#include "nRF24L01.h"
 
 /******************************************************************************/
 /* User Functions                                                             */
@@ -80,5 +81,7 @@ void InitApp(void)
     INTCONbits.GIE=1;   // arrancamos interrupciones altas
     //INTCONbits.PEIE=1;  // arrancamos interrupciones bajas
 
+    // Se configura e inicia en modo primary TX el módulo wireless
+    nRF_Setup();
 }
 

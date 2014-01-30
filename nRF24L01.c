@@ -16,50 +16,14 @@
 //Pins
 #define triscsn TRISC2
 #define trisce TRISC1
-#define csnPin RC2
-#define cePin RC1
+#define csnPin PORTCbits.RC2
+#define cePin PORTCbits.RC1
 //#define irqPin
-
-//Commands
-const BYTE R_REG = 0x00;
-const BYTE W_REG = 0x20;
-const BYTE RX_PAYLOAD = 0x61;
-const BYTE TX_PAYLOAD = 0xA0;
-const BYTE FLUSH_TX = 0xE1;
-const BYTE FLUSH_RX = 0xE2;
-const BYTE ACTIVATE = 0x50;
-const BYTE R_STATUS = 0xFF;
-
-//Registers
-const BYTE NRF_CONFIG = 0x00;
-const BYTE EN_AA = 0x01;
-const BYTE EN_RXADDR = 0x02;
-const BYTE SETUP_AW = 0x03;
-const BYTE SETUP_RETR = 0x04;
-const BYTE RF_CH = 0x05;
-const BYTE RF_SETUP = 0x06;
-const BYTE NRF_STATUS = 0x07;
-const BYTE OBSERVE_TX = 0x08;
-const BYTE CD = 0x09;
-const BYTE RX_ADDR_P0 = 0x0A;
-const BYTE RX_ADDR_P1 = 0x0B;
-const BYTE RX_ADDR_P2 = 0x0C;
-const BYTE RX_ADDR_P3 = 0x0D;
-const BYTE RX_ADDR_P4 = 0x0E;
-const BYTE RX_ADDR_P5 = 0x0F;
-const BYTE TX_ADDR = 0x10;
-const BYTE RX_PW_P0 = 0x11;
-const BYTE RX_PW_P1 = 0x12;
-const BYTE RX_PW_P2 = 0x13;
-const BYTE RX_PW_P3 = 0x14;
-const BYTE RX_PW_P4 = 0x15;
-const BYTE RX_PW_P5 = 0x16;
-const BYTE FIFO_STATUS = 0x17;
-const BYTE DYNPD = 0x1C;
-const BYTE FEATURE = 0x1D;
 
 //Data
 BYTE RXTX_ADDR[3] = { 0xB6, 0x24, 0xA6 };  //Randomly chosen address
+#define RF_CHANNEL  0x05
+
 BOOL rfCardPresent = FALSE;
 
 //Local Helper Function Prototypes
@@ -85,14 +49,14 @@ void nRF_Setup()
   csnPin = 1;
   cePin = 0;
 
-  WriteRegister(NRF_CONFIG, 0x0B);     //1 BYTE CRC, POWER UP, PRX
-  WriteRegister(EN_AA, 0x00);          //Disable auto ack
-  WriteRegister(EN_RXADDR, 0x01);      //Enable data pipe 0
-  WriteRegister(SETUP_AW, 0x01);       //3 BYTE address
-  WriteRegister(SETUP_RETR, 0x00);     //Retransmit disabled
-  WriteRegister(RF_CH, 0x05);          //Randomly chosen RF channel
-  WriteRegister(RF_SETUP, 0x26);       //250kbps, 0dBm
-  WriteRegister(RX_PW_P0, 0x01);       //RX payload = 1 BYTE
+  WriteRegister(NRF_CONFIG, 0x00001010);    // 1 BYTE CRC, POWER UP, PTX
+  WriteRegister(EN_AA, 0b00000000);         // Se deshabilita el auto ack de todos los pipes
+  WriteRegister(EN_RXADDR, 0b00000001);     // Se habilita sólo pipe0
+  WriteRegister(SETUP_AW, 0x01);            // 3 BYTE address
+  WriteRegister(SETUP_RETR, 0x00);          // Retransmit disabled
+  WriteRegister(RF_CH, RF_CHANNEL);         // Configuramos canal
+  WriteRegister(RF_SETUP, 0b00000110);      // 1Mbps, 0dBm
+  WriteRegister(RX_PW_P0, 1);               // RX payload = 1 BYTE
 
   WriteAddress(RX_ADDR_P0, 3, RXTX_ADDR);
   WriteAddress(TX_ADDR, 3, RXTX_ADDR);
