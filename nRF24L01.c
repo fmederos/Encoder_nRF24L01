@@ -21,8 +21,11 @@
 //#define irqPin
 
 //Data
-BYTE RXTX_ADDR[3] = { 0xB6, 0x24, 0xA6 };  //Randomly chosen address
-#define RF_CHANNEL  0x05
+// Configuración de dirección, canal, velocidad y potencia del módulo wireless
+// van en nRF24L01.h (faltan veloc. y potencia)
+//
+//BYTE RXTX_ADDR[3] = { 0xB6, 0x24, 0xA6 };  //Randomly chosen address
+//#define RF_CHANNEL  0x05
 
 BOOL rfCardPresent = FALSE;
 

@@ -38,14 +38,20 @@ void main(void)
 
     // InitApp inicializa E/S del uC, periféricos internos y externos (módulo wireless)
     InitApp();
+    // Establecemos modo TX primario
+    TXMode();
 
     while(1)
     {
+        // Restablecemos Watchdog
+        CLRWDT();
+
         // La cuenta de contador es incrementada/decrementada por la rutina
         // de atención de interrupción por cambio de pines RB0/1
 
         // Verificamos si la cuenta se ha modificado
-        if(contador != contador_ant){
+//        if(contador != contador_ant){
+        if(contador++ != contador_ant){
             // hubo movimiento del encoder
             // confirmamos que buffer TX quede vacío
             // chequeamos flag TX_EMPTY (bit 4)

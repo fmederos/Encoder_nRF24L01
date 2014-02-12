@@ -43,6 +43,10 @@
 #define DYNPD           0x1C
 #define FEATURE         0x1D
 
+//Data
+BYTE RXTX_ADDR[3] = { 0xB6, 0x24, 0xA6 };  //Randomly chosen address
+#define RF_CHANNEL  0x05
+
 
 void nRF_Setup();
 void RXMode();
